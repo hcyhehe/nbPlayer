@@ -3,18 +3,21 @@
     <div class="s1">
       <van-search
         v-model="keywords"
-        placeholder="请输入歌曲关键词"
+        placeholder="请输入歌曲或歌手的关键词"
         show-action
         @search="onSearch"
         @cancel="onCancel"
       />
     </div>
-    <div class="s2">
-      <van-tabs v-model="active" color="#aaa" title-active-color="#000" title-inactive-color="#666">
+
+    <div class="s2" v-if="list.length>0">
+      <van-tabs v-model="active" color="#aaa" title-active-color="#000" title-inactive-color="#666" @click="onClick">
         <van-tab title="网易云音乐"></van-tab>
         <van-tab title="QQ音乐"></van-tab>
       </van-tabs>
     </div>
+    <div class="s2" v-if="list.length==0"></div>
+
     <div class="s3" v-if="list.length>0">
       <div class="one" v-for="(obj,index) in list" :key="index">
         <div class="o1" v-show="Index!==index">{{index+1}}.</div>
@@ -47,11 +50,14 @@ import { Toast, Search } from 'vant'
 export default {
   data(){
     return{
+      audio: '',
       keywords: '',
       list: [],
+      list0: [],
+      list1: [],
       href: '',
       Index: '',
-      active: 0,
+      active: 0,  //0为网易云，1为QQ
     }
   },
   methods: {
@@ -60,30 +66,87 @@ export default {
       if(!this.keywords){
         return Toast('关键词不能为空')
       }
+
+      //清空当前播放
+      that.Index = ''
+      that.href = ''
+      that.audio.pause()
+      that.audio.currentTime = 0
+
+      //获取网易云音乐
       aGet(api.net163Search, {keywords: this.keywords}).then(res=>{
         console.log('net163Search', res.data)
         if(res.data.status==200){
-          that.list = res.data.body.result.songs
+          that.list0 = res.data.body.result.songs
+          if(that.active==0){
+            that.list = that.list0
+          }
+        } else {
+          Toast('网易云音乐获取失败')
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+
+      //获取QQ音乐
+      aGet(api.qqSearch, {keywords: this.keywords}).then(res=>{
+        console.log('qqSearch', res.data)
+        if(res.data.status==200){
+          that.list1 = res.data.data
+          if(that.active==1){
+            that.list = that.list1
+          }
+        } else {
+          Toast('QQ音乐获取失败')
         }
       }).catch(err=>{
         console.log(err)
       })
     },
+
+    onClick(e){
+      if(e==0) this.list = this.list0
+      if(e==1) this.list = this.list1
+    },
+
     onCancel(){
       this.keywords = ''
     },
+
     player(id, index){
-      let audio = document.getElementById('audio')
+      let that = this
       if(this.Index !== index){
         this.Index = index
-        this.href = 'https://music.163.com/song/media/outer/url?id='+id+'.mp3'
-        console.log(this.href)
+        if(this.active == 0){
+          this.href = 'https://music.163.com/song/media/outer/url?id='+id+'.mp3'
+          console.log(this.href)
+        }
+        if(this.active == 1){
+          let songmid
+          if(this.list1[index].file.media_mid){
+            songmid = this.list1[index].file.media_mid
+          } else {
+            return Toast('此歌曲暂时无法播放')
+          }
+          aGet(api.qqGetVKey, {songmid:songmid}).then(res=>{
+            if(res.data.code==0){
+              let vkey = res.data.req.data.vkey
+              that.href = 'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400'+songmid+'.m4a?guid='+res.data.guid+
+                          '&vkey='+vkey+'&uin=0&fromtag=38'
+              console.log(that.href)
+            } else {
+              Toast('QQ音乐获取vKey失败')
+            }
+          }).catch(err=>{
+            console.log(err)
+          })
+        }
         setTimeout(()=>{
-          audio.play()
+          that.audio.play()
         }, 100)
       } else {
         this.Index = ''
-        audio.pause()
+        this.audio.pause()
       }
     },
   },
@@ -93,7 +156,7 @@ export default {
   },
 
   mounted(){
-    //this.height = document.body.clientHeight + 'px'
+    this.audio = document.getElementById('audio')
   }
 }
 </script>
