@@ -7,7 +7,6 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #fff;
 }
 
 * {
@@ -16,7 +15,6 @@ body {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 input {
