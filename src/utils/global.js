@@ -1,6 +1,8 @@
 const erp = erp || {}
 
-const bg = 'http://localhost:8086/music'
+//const bg = 'http://localhost:8086/music'
+const bg = 'http://116.196.68.87/music'
+
 
 const HOST = bg + '/api'
 
