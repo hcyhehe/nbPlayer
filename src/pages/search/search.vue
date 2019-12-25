@@ -89,7 +89,7 @@ export default {
       })
 
       //获取QQ音乐
-      aGet(api.qqSearch, {keywords: this.keywords}).then(res=>{
+      aGet(api.qqSearch, {key: this.keywords}).then(res=>{
         console.log('qqSearch', res.data)
         if(res.data.status==200){
           that.list1 = res.data.data
@@ -122,20 +122,13 @@ export default {
           console.log(this.href)
         }
         if(this.active == 1){
-          let songmid
-          if(this.list1[index].file.media_mid){
-            songmid = this.list1[index].file.media_mid
-          } else {
-            return Toast('此歌曲暂时无法播放')
-          }
-          aGet(api.qqGetVKey, {songmid:songmid}).then(res=>{
-            if(res.data.code==0){
-              let vkey = res.data.req.data.vkey
-              that.href = 'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400'+songmid+'.m4a?guid='+res.data.guid+
-                          '&vkey='+vkey+'&uin=0&fromtag=38'
+          aGet(api.qqGetUrls, {id:id}).then(res=>{
+            console.log('qqGetUrls', res.data)
+            if(res.data.status==200){
+              that.href = res.data.data[id]
               console.log(that.href)
             } else {
-              Toast('QQ音乐获取vKey失败')
+              Toast('QQ音乐获取失败')
             }
           }).catch(err=>{
             console.log(err)
