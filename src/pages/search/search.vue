@@ -120,6 +120,9 @@ export default {
         if(this.active == 0){
           this.href = 'https://music.163.com/song/media/outer/url?id='+id+'.mp3'
           console.log(this.href)
+          setTimeout(()=>{
+            that.audio.play()
+          }, 100)
         }
         if(this.active == 1){
           aGet(api.qqGetUrls, {id:id}).then(res=>{
@@ -127,6 +130,9 @@ export default {
             if(res.data.status==200){
               that.href = res.data.data[id]
               console.log(that.href)
+              setTimeout(()=>{
+                that.audio.play()
+              }, 100)
             } else {
               Toast('QQ音乐获取失败')
             }
@@ -134,9 +140,6 @@ export default {
             console.log(err)
           })
         }
-        setTimeout(()=>{
-          that.audio.play()
-        }, 100)
       } else {
         this.Index = ''
         this.audio.pause()

@@ -1,30 +1,32 @@
-# wallet
+# nbPlayer
 
-> lb_wallet
+#### 介绍
+1. 全名“随搜听”音乐播放器
+2. 支持网易云音乐和QQ音乐的在线搜索的音乐播放器
+3. 当前使用的后台API：https://github.com/hcyhehe/music_api.git
 
-## Build Setup
 
-``` bash
-# install dependencies
-npm install
+#### 软件架构
+1. 基于vue2.x全家桶开发而成
+2. UI框架采用vant-ui
 
-# serve with hot reload at localhost:8080
-npm run dev
 
-# build for production with minification
-npm run build
+#### 安装教程
+1. 安装依赖：npm install 
+2. 运行：npm run dev
+3. 打包部署: npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
 
-# run unit tests
-npm run unit
+#### 接口说明
+1. 接口地址统一归纳到utils/global.js下
+2. 若后台API在本地，则将const bg = 'http://localhost:8086/music' 这句去掉注释即可
 
-# run e2e tests
-npm run e2e
 
-# run all tests
-npm test
-```
+#### 界面说明
+目前界面风格较为简洁，主要以搜索为主，后期会继续优化
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+#### 版本更新计划
+1.  后期加入虾米音乐的搜索功能
+2.  加入歌曲详情页
+3.  加入判断当前歌曲是否需要vip才能播放
