@@ -23,7 +23,7 @@
         <div class="o1" v-show="Index!==index">{{index+1}}.</div>
         <img class="o5" v-show="Index===index" src="../../assets/img/wave.gif" />
         <div class="o2">{{obj.name}}</div> 
-        <div class="o3" @click="player(obj.id, index)">
+        <div class="o3" @click="player(obj.id, index, obj.fee)">
           <van-icon v-show="Index!==index" name="play-circle-o" size="0.85rem" />
           <van-icon v-show="Index===index" name="pause-circle-o" size="0.85rem" />
         </div>
@@ -113,8 +113,11 @@ export default {
       this.keywords = ''
     },
 
-    player(id, index){
+    player(id, index, fee){
       let that = this
+      if(fee==1){
+        return Toast('该歌曲为收费歌曲，暂不可播放')
+      }
       if(this.Index !== index){
         this.Index = index
         if(this.active == 0){
