@@ -1,20 +1,14 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import search from '@/pages/search/search'
+import VueRouter from 'vue-router'
 
-
-Vue.use(Router)
-
+Vue.use(VueRouter)
 
 const routes = [
-  { path: '/',component: search }
+  { path: '/', name: 'search', component: () => import('@/pages/search/search.vue') }
 ]
 
-
-const router = new Router({
-  mode: 'hash',
+const router = new VueRouter({
   routes
 })
-
 
 export default router

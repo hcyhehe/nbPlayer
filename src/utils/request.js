@@ -3,7 +3,7 @@ import qs from 'qs'
 import { Toast } from 'vant'
 
 
-async function aGet(url, params, noIndicator){
+exports.aGet = async function aGet(url, params, noIndicator){
   try{
     if(!noIndicator) Toast.loading({message: '加载中...', forbidClick: true})
     let res = await axios.get(url, {
@@ -22,7 +22,7 @@ async function aGet(url, params, noIndicator){
 
 
 //x-www-form-urlencoded
-async function aPost(url, params, noIndicator){
+exports.aPost = async function aPost(url, params, noIndicator){
   try{
     if(!noIndicator) Toast.loading({message: '加载中...', forbidClick: true})
     let res = await axios.post(url, qs.stringify(params),
@@ -41,7 +41,7 @@ async function aPost(url, params, noIndicator){
 
 
 //application/json
-async function aPost2(url, params, noIndicator){
+exports.aPost2 = async function aPost2(url, params, noIndicator){
   try{
     if(!noIndicator) Toast.loading({message: '加载中...', forbidClick: true})
     let res = await axios.post(url, params, {headers: {'Content-Type': 'application/json'},timeout: 8000})
@@ -55,8 +55,3 @@ async function aPost2(url, params, noIndicator){
 }
 
 
-module.exports = {
-  aGet: aGet,
-  aPost: aPost,
-  aPost2: aPost2
-}
