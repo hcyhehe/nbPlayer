@@ -4,7 +4,14 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', name: 'search', component: () => import('@/pages/search/search.vue') }
+  { path: '/',
+    redirect: '/search',
+    component: () => import('@/pages/index'),
+    children: [
+      { path: '/search', name: 'search', component: () => import('@/pages/search/search') },
+      { path: '/rank', name: 'rank', component: () => import('@/pages/rank/rank') }
+    ]
+  },
 ]
 
 const router = new VueRouter({

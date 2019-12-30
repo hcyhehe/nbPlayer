@@ -1,15 +1,6 @@
 <template>
-  <div class="search">
-    <div class="s1">
-      <van-search
-        v-model="keywords"
-        placeholder="请输入歌曲或歌手的关键词"
-        show-action
-        @search="onSearch"
-        @cancel="onCancel"
-      />
-    </div>
-
+  <div class="rank">
+    <div class="s1">热歌排行榜TOP100</div>
     <div class="s2" v-if="list.length>0">
       <van-tabs v-model="active" color="#aaa" title-active-color="#000" title-inactive-color="#666" @click="onClick">
         <van-tab title="网易云音乐"></van-tab>
@@ -27,7 +18,7 @@
           <van-icon v-show="Index!==index" name="play-circle-o" size="0.85rem" />
           <van-icon v-show="Index===index" name="pause-circle-o" size="0.85rem" />
         </div>
-        <div class="o4">{{obj.artists[0].name}}</div>
+        <div class="o4">{{obj.ar[0].name}}</div>
       </div>
     </div>
     <div class="s3" v-if="list.length==0">
@@ -51,7 +42,6 @@ export default {
   data(){
     return{
       audio: '',
-      keywords: '',
       list: [],
       list0: [],
       list1: [],
@@ -61,56 +51,42 @@ export default {
     }
   },
   methods: {
-    onSearch(){
-      let that = this
-      if(!this.keywords){
-        return Toast('关键词不能为空')
-      }
-
-      //清空当前播放
-      that.Index = ''
-      that.href = ''
-      that.audio.pause()
-      that.audio.currentTime = 0
-
-      //获取网易云音乐
-      aGet(api.net163Search, {keywords: this.keywords}).then(res=>{
-        console.log('net163Search', res.data)
-        if(res.data.status==200){
-          that.list0 = res.data.body.result.songs
-          if(that.active==0){
-            that.list = that.list0
-          }
-        } else {
-          Toast('网易云音乐获取失败')
-        }
-      }).catch(err=>{
-        console.log(err)
-      })
-
-      //获取QQ音乐
-      aGet(api.qqSearch, {key: this.keywords}).then(res=>{
-        console.log('qqSearch', res.data)
-        if(res.data.status==200){
-          that.list1 = res.data.data
-          if(that.active==1){
-            that.list = that.list1
-          }
-        } else {
-          Toast('QQ音乐获取失败')
-        }
-      }).catch(err=>{
-        console.log(err)
-      })
-    },
-
     onClick(e){
       if(e==0) this.list = this.list0
       if(e==1) this.list = this.list1
     },
 
-    onCancel(){
-      this.keywords = ''
+    getList(){
+      let that = this
+      //获取网易云音乐排行榜
+      aGet(api.net163TopList, {idx:1}).then(res=>{
+        console.log('net163TopList', res.data)
+        if(res.data.status==200){
+          that.list0 = res.data.body.playlist.tracks
+          if(that.active==0){
+            that.list = that.list0
+          }
+        } else {
+          Toast('网易云音乐排行榜获取失败')
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+
+      //获取QQ音乐排行榜
+      aGet(api.qqTopList).then(res=>{
+        console.log('qqTopList', res.data)
+        if(res.data.status==200){
+          that.list1 = res.data.data.list
+          if(that.active==1){
+            that.list = that.list1
+          }
+        } else {
+          Toast('QQ音乐排行榜获取失败')
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
     },
 
     player(id, index, fee){
@@ -151,11 +127,11 @@ export default {
   },
 
   created(){
-    
+    this.getList()
   },
 
   mounted(){
-    this.$store.state.tab = 0
+    this.$store.state.tab = 1
     this.audio = document.getElementById('audio')
   }
 }
@@ -169,22 +145,33 @@ html,body{
   background: #b2b2b2;
 }
 
-.search {
+.rank {
   position: relative;
   .s1{
     position: fixed;
     width: 100%;
+    height: 1.15rem;
+    line-height: 1.2rem;
     left: 0;
     top: 0;
     z-index: 10;
+    text-align: center;
+    color: #fff;
+    font-size: 0.43rem;
+    background: #b2b2b2;
   }
   .s2{
-    margin-top: 1.31rem;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 1.15rem;
+    z-index: 10;
   }
   .s3{
     width: 92%;
     margin: 0 auto;
-    padding-bottom: 1.28rem;
+    padding-top: 2.32rem;
+    padding-bottom: 2.55rem;
     .text{
       height: 2rem;
       line-height: 2.5rem;
