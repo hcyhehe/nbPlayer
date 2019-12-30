@@ -171,7 +171,7 @@ html,body{
     width: 92%;
     margin: 0 auto;
     padding-top: 2.32rem;
-    padding-bottom: 2.55rem;
+    padding-bottom: 2.7rem;
     .text{
       height: 2rem;
       line-height: 2.5rem;
@@ -223,7 +223,7 @@ html,body{
     width: 100%;
     height: 1.2rem;
     left: 0;
-    bottom: 1.23rem;
+    bottom: 1.4rem;
     z-index: 10;
   }
 }

@@ -179,12 +179,17 @@ html,body{
     z-index: 10;
   }
   .s2{
-    margin-top: 1.31rem;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 1.31rem;
+    z-index: 10;
   }
   .s3{
     width: 92%;
     margin: 0 auto;
-    padding-bottom: 1.28rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.7rem;
     .text{
       height: 2rem;
       line-height: 2.5rem;
@@ -236,7 +241,7 @@ html,body{
     width: 100%;
     height: 1.2rem;
     left: 0;
-    bottom: 1.23rem;
+    bottom: 1.4rem;
     z-index: 10;
   }
 }
