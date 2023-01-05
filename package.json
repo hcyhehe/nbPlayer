@@ -24,7 +24,7 @@
     "@vue/cli-plugin-pwa": "^4.1.0",
     "@vue/cli-plugin-router": "^4.1.0",
     "@vue/cli-plugin-vuex": "^4.1.0",
-    "@vue/cli-service": "^4.1.0",
+    "@vue/cli-service": "^5.0.8",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-vue-jsx": "^3.7.0",
     "node-sass": "^4.12.0",
